@@ -62,9 +62,41 @@ export const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return;
     }
 });
-export const signin = (req, res) => {
-    res.send("Signout");
-};
+export const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
+    try {
+        const user = yield User.findOne({ email });
+        if (!user) {
+            res.status(400).json({
+                message: "Please create an account first!",
+            });
+            return;
+        }
+        const isCorrectPassword = yield bcrypt.compare(password, user.password);
+        if (!isCorrectPassword) {
+            res.status(400).json({
+                message: "Invalid Credentials!",
+            });
+            return;
+        }
+        generateToken(user._id.toString(), res);
+        res.status(200).json({
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            profilePic: user.profilePic,
+        });
+        return;
+    }
+    catch (error) {
+        console.error(error);
+        console.log("Error in signup controller");
+        res.status(500).json({
+            message: "Internal server error",
+        });
+        return;
+    }
+});
 export const logout = (req, res) => {
     res.send("Logout");
 };

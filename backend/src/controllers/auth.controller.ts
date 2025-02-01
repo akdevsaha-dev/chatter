@@ -54,8 +54,41 @@ export const signup = async (req: Request, res: Response) => {
   }
 };
 
-export const signin = (req: Request, res: Response) => {
-  res.send("Signout");
+export const signin = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.status(400).json({
+        message: "Please create an account first!",
+      });
+      return;
+    }
+    const isCorrectPassword = await bcrypt.compare(password, user.password);
+    if (!isCorrectPassword) {
+      res.status(400).json({
+        message: "Invalid Credentials!",
+      });
+      return;
+    }
+    generateToken(user._id.toString(), res);
+
+    res.status(200).json({
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      profilePic: user.profilePic,
+    });
+    return;
+  } catch (error) {
+    console.error(error);
+    console.log("Error in signup controller");
+    res.status(500).json({
+      message: "Internal server error",
+    });
+    return;
+  }
 };
 
 export const logout = (req: Request, res: Response) => {
