@@ -98,5 +98,20 @@ export const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 export const logout = (req, res) => {
-    res.send("Logout");
+    try {
+        res.cookie("jwt", "", {
+            maxAge: 0,
+        });
+        res.status(200).json({
+            message: "Logged out succesfully!",
+        });
+    }
+    catch (error) {
+        console.error(error);
+        console.log("Error in signup controller");
+        res.status(500).json({
+            message: "Internal server error",
+        });
+        return;
+    }
 };

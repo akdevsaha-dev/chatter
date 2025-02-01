@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
 import { generateToken } from "../utils/index.utils.js";
@@ -92,5 +92,19 @@ export const signin = async (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
-  res.send("Logout");
+  try {
+    res.cookie("jwt", "", {
+      maxAge: 0,
+    });
+    res.status(200).json({
+      message: "Logged out succesfully!",
+    });
+  } catch (error) {
+    console.error(error);
+    console.log("Error in signup controller");
+    res.status(500).json({
+      message: "Internal server error",
+    });
+    return;
+  }
 };
