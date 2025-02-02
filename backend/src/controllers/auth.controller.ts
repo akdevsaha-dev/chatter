@@ -128,18 +128,33 @@ export const updateProfile = async (req: Request, res: Response) => {
       { new: true },
     );
     if (!updatedUser) {
-      return res.status(404).json({
+      res.status(404).json({
         message: "User not found",
       });
+      return;
     }
     res.status(200).json({
       message: "Profile updated successfully",
       user: updatedUser,
     });
+    return;
   } catch (error) {
     console.error(error);
     res.status(500).json({
       message: "Error updating profile",
+    });
+    return;
+  }
+};
+
+export const checkAuth = (req: Request, res: Response) => {
+  try {
+    //@ts-ignore
+    res.status(200).json(req.user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Internal server error",
     });
   }
 };

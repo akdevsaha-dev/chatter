@@ -1,5 +1,6 @@
 import express from "express"; // Correct ESM import
 import {
+  checkAuth,
   logout,
   signin,
   signup,
@@ -13,4 +14,5 @@ router.post("/signin", signin);
 router.post("/logout", logout);
 
 router.put("/update-profile", protectRoute, updateProfile);
+router.get("/check", protectRoute, checkAuth);
 export default router; // Correct ESM export
