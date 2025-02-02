@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
 import { generateToken } from "../utils/index.utils.js";
+import cloudinary from "../lib/cloudinary.js";
 export const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { fullName, password, email } = req.body;
     try {
@@ -113,5 +114,50 @@ export const logout = (req, res) => {
             message: "Internal server error",
         });
         return;
+    }
+};
+export const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { profilePic } = req.body;
+        //@ts-ignore
+        const userID = req.user._id;
+        if (!profilePic) {
+            res.status(400).json({
+                message: "Profile pic is required",
+            });
+            return;
+        }
+        const pictureResponse = yield cloudinary.uploader.upload(profilePic);
+        const updatedUser = yield User.findByIdAndUpdate(userID, { profilePic: pictureResponse.secure_url }, { new: true });
+        if (!updatedUser) {
+            res.status(404).json({
+                message: "User not found",
+            });
+            return;
+        }
+        res.status(200).json({
+            message: "Profile updated successfully",
+            user: updatedUser,
+        });
+        return;
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Error updating profile",
+        });
+        return;
+    }
+});
+export const checkAuth = (req, res) => {
+    try {
+        //@ts-ignore
+        res.status(200).json(req.user);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Internal server error",
+        });
     }
 };
