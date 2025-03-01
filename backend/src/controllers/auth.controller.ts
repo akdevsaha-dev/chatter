@@ -57,7 +57,6 @@ export const signup = async (req: Request, res: Response) => {
 
 export const signin = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-
   try {
     const user = await User.findOne({ email });
     if (!user) {
@@ -74,7 +73,6 @@ export const signin = async (req: Request, res: Response) => {
       return;
     }
     generateToken(user._id.toString(), res);
-
     res.status(200).json({
       _id: user._id,
       fullName: user.fullName,
