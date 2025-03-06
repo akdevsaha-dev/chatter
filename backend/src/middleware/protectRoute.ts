@@ -18,7 +18,6 @@ export const protectRoute = async (
       });
       return;
     }
-
     const decoded = jwt.verify(
       token,
       process.env.JWT_SECRET as string,
@@ -29,7 +28,6 @@ export const protectRoute = async (
       });
     }
     const user = await User.findById(decoded.userID).select("-password");
-
     //@ts-ignore
     req.user = user;
     next();

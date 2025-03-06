@@ -80,12 +80,16 @@ export const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
             return;
         }
+        // Set user as online
+        user.isOnline = true;
+        yield user.save();
         generateToken(user._id.toString(), res);
         res.status(200).json({
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
             profilePic: user.profilePic,
+            isOnline: user.isOnline,
         });
         return;
     }
@@ -98,24 +102,24 @@ export const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return;
     }
 });
-export const logout = (req, res) => {
+export const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        // @ts-ignore
+        const userId = req.user._id;
+        // Set user as offline
+        yield User.findByIdAndUpdate(userId, { isOnline: false });
+        // Clear the JWT cookie
         res.cookie("jwt", "", {
             maxAge: 0,
+            httpOnly: true,
         });
-        res.status(200).json({
-            message: "Logged out succesfully!",
-        });
+        res.status(200).json({ message: "Logged out successfully" });
     }
     catch (error) {
-        console.error(error);
-        console.log("Error in signup controller");
-        res.status(500).json({
-            message: "Internal server error",
-        });
-        return;
+        console.error("Error in logout controller:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
-};
+});
 export const updateProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { profilePic } = req.body;

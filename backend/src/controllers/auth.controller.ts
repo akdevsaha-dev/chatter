@@ -72,12 +72,17 @@ export const signin = async (req: Request, res: Response) => {
       });
       return;
     }
+    // Set user as online
+    user.isOnline = true;
+    await user.save();
+    
     generateToken(user._id.toString(), res);
     res.status(200).json({
       _id: user._id,
       fullName: user.fullName,
       email: user.email,
       profilePic: user.profilePic,
+      isOnline: user.isOnline,
     });
     return;
   } catch (error) {
@@ -89,22 +94,24 @@ export const signin = async (req: Request, res: Response) => {
     return;
   }
 };
-
-export const logout = (req: Request, res: Response) => {
+export const logout = async (req: Request, res: Response) => {
   try {
+    // @ts-ignore
+    const userId = req.user._id;
+    
+    // Set user as offline
+    await User.findByIdAndUpdate(userId, { isOnline: false });
+    
+    // Clear the JWT cookie
     res.cookie("jwt", "", {
       maxAge: 0,
+      httpOnly: true,
     });
-    res.status(200).json({
-      message: "Logged out succesfully!",
-    });
+    
+    res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
-    console.error(error);
-    console.log("Error in signup controller");
-    res.status(500).json({
-      message: "Internal server error",
-    });
-    return;
+    console.error("Error in logout controller:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 

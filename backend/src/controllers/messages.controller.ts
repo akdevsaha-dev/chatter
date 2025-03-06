@@ -3,7 +3,7 @@ import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
 import cloudinary from "../lib/cloudinary.js";
 
-export const getUsersForSidebar = async (req: Request, res: Response) => {
+export const getUsersForSidebar = async (req: Request, res: Response): Promise<void> => {
   try {
     // @ts-ignore
     const loggedInUserID = req.user._id;
@@ -16,58 +16,54 @@ export const getUsersForSidebar = async (req: Request, res: Response) => {
     res.status(500).json({
       message: "Internal server error",
     });
-    return;
   }
 };
 
-export const getMessages = async (req: Request, res: Response) => {
+export const getMessages = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id: userToChatWithID } = req.params;
     // @ts-ignore
     const myID = req.user._id;
-    const message = await Message.find({
+    const messages = await Message.find({
       $or: [
         { senderId: myID, receiverId: userToChatWithID },
         { senderId: userToChatWithID, receiverId: myID },
       ],
-    });
-    res.status(200).json(message);
-    return;
+    }).sort({ createdAt: 1 });
+    res.status(200).json(messages);
   } catch (error) {
     console.error(error);
     res.status(500).json({
       message: "Internal server error",
     });
-    return;
   }
 };
 
 export const sendMessage = async (req: Request, res: Response) => {
   try {
     const { text, image } = req.body;
-    const { id: receiverID } = req.params;
+    const { id: receiverId } = req.params;
     //@ts-ignore
-    const senderID = req.user._id;
-    let imageUrl;
+    const senderId = req.user._id;
 
+    let imageUrl;
     if (image) {
+      // Upload base64 image to cloudinary
       const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
     }
 
     const newMessage = new Message({
-      senderID,
-      receiverID,
+      senderId,
+      receiverId,
       text,
       image: imageUrl,
     });
     await newMessage.save();
-
-    //todo => real time functionality(using socket io)
-
     res.status(201).json(newMessage);
   } catch (error) {
-    console.error(error);
-    console.log("Internal server error!");
+    console.error(error)
+    console.log("Error in sendMessage controller")
+    res.status(500).json({ error: "Internal server error" });
   }
 };
