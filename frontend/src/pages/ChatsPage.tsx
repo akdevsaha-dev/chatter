@@ -1,5 +1,5 @@
 export const ChatsPage = () => {
   return (
-    <div>ChatsPage</div>
+    <div className="text-white">ChatsPage</div>
   )
 }

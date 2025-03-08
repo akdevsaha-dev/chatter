@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
 import { LampContainer } from "@/components/ui/lamp";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Loader2 } from "lucide-react";
 export const LoginPage = () => {
@@ -30,6 +30,7 @@ export const LoginPage = () => {
     <div className="h-screen w-full grid grid-cols-8">
       {/* left side */}
       <div className="col-span-4 bg-black flex justify-center items-center">
+      <Toaster position="top-center" reverseOrder={false} />
         <div className="h-[70%] w-[60%] rounded-lg text-white pl-3">
           <div className="text-3xl font-semibold font-sans  pt-10">
             Create your account
@@ -75,14 +76,13 @@ export const LoginPage = () => {
             <button
               type="submit"
               className="h-10 w-full min-w-0 bg-indigo-800 hover:bg-indigo-700 text-white font-thin  py-2 px-4 rounded"
-              onClick={handleSubmit}
+              onClick={handleSubmit} disabled={isLoggingIn}
             >
               {isLoggingIn ? (
                 <>
                   <Loader2 className="animate-spin size-5" />
                   Loading...
-                </>
-              ) : (
+                </> ) : (
                 "Login"
               )}
             </button>
