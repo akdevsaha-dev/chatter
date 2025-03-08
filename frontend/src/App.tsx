@@ -14,13 +14,13 @@ export default function App() {
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-  console.log({ authUser });
   if(isCheckingAuth && !authUser) return <div className="justify-center items-center flex h-screen">
     <Loader className="animate-spin size-10"  />
   </div>
   return (
     <div className="min-h-screen bg-black">
       {/* <Navbar /> */}
+      
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={!authUser? <SignUpPage />: <Navigate to= "/chat"/>} />

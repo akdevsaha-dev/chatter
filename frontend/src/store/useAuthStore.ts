@@ -8,8 +8,13 @@ interface AuthStore {
   checkAuth: () => void;
   isCheckingAuth: boolean
   isSigningUp : boolean
+  isLoggingIn: boolean
   signup: (data: { fullName: string; email: string; password: string }) => void
+  login : (data: {email: string;
+    password: string}) => void
 }
+
+
 export const useAuthStore = create<AuthStore>((set) => ({
 
   authUser: null,
@@ -45,4 +50,10 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }
   },
 
+  login: async (data: {
+    email: string,
+    password: string
+  }) => {
+     set({isLoggingIn: true})
+  }
 }))
