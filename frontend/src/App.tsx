@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-// import { Navbar } from "./components/Navbar";
+import { Navbar } from "./components/Navbar";
 import { HomePage } from "./pages/HomePage";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
@@ -9,6 +9,7 @@ import { SignUpPage } from "./pages/SignUpPage";
 import { LoginPage } from "./pages/LoginPage";
 import { ChatsPage } from "./pages/ChatsPage";
 import { Loader } from "lucide-react";
+import { NotFound } from "./pages/NotFound";
 export default function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function App() {
   </div>
   return (
     <div className="min-h-screen bg-black">
-      {/* <Navbar /> */}
+      <Navbar />
       
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/chat" element={ authUser ? <ChatsPage />: <Navigate to="/login"/> } />
         <Route path="/profile" element={authUser? <ProfilePage />: <Navigate to="/login"/>} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </div>
   );

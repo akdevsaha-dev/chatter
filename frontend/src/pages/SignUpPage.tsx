@@ -32,7 +32,7 @@ export const SignUpPage = () => {
     if (success === true) signup(formData);
   };
   return (
-    <div className="h-screen w-full grid grid-cols-8">
+    <div className="h-[80vh] w-full grid grid-cols-8">
       {/* left side */}
       <div className="col-span-4 bg-black flex justify-center items-center">
         <Toaster position="top-center" reverseOrder={false} />
