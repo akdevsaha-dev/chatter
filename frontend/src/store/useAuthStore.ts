@@ -3,8 +3,9 @@ import { create } from 'zustand'
 import { axiosInstance } from '../lib/axios'
 import toast from "react-hot-toast";
 
+
 interface AuthStore {
-  authUser: { id: string; fullName: string; email: string; createdAt: Date } | null;
+  authUser: { _id: string; fullName: string; email: string; createdAt: string } | null;
   checkAuth: () => void;
   isCheckingAuth: boolean
   isSigningUp : boolean
@@ -12,7 +13,9 @@ interface AuthStore {
   signup: (data: { fullName: string; email: string; password: string }) => void
   login : (data: {email: string;
     password: string}) => void
-    isUpdatingProfile: boolean
+  isUpdatingProfile: boolean
+  logout: () => void
+  onlineUsers: string[]
 }
 
 
@@ -23,6 +26,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   isLoggingIn: false,
   isUpdatingProfile: false,
   isCheckingAuth: true, //as soon as we refresh our page we will start to check if the user is authenticated or not.
+  onlineUsers: [],
 
   checkAuth: async () => {
     try {

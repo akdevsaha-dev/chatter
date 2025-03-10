@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export const Navbar = () => {
   const {logout, authUser} = useAuthStore();
   return (
-    <div className="bg-black h-[10vh] w-full px-5 text-white flex fixed z-1">
+    <div className="bg-black h-[9vh] w-full px-5 text-white flex fixed z-1">
       <div className="w-[40%] font-semibold text-xl font-mono flex items-center pl-[10%]">
         CHATTER
       </div>
