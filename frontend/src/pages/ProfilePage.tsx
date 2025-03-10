@@ -21,7 +21,7 @@ export const ProfilePage = () => {
   // };
 
   return (
-    <div className="min-h-60 pt-20 text-white">
+    <div className="min-h-52 bg-black  pt-20 text-white">
       <div className="max-w-2xl mx-auto p-4 py-8">
         <div className="bg-base-300 rounded-xl p-6 space-y-8">
           <div className="text-center">

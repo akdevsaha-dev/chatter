@@ -4,7 +4,7 @@ import { axiosInstance } from '../lib/axios'
 import toast from "react-hot-toast";
 
 interface AuthStore {
-  authUser: { id: string; fullName: string; email: string } | null;
+  authUser: { id: string; fullName: string; email: string; createdAt: Date } | null;
   checkAuth: () => void;
   isCheckingAuth: boolean
   isSigningUp : boolean
