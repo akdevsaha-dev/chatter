@@ -5,7 +5,7 @@ import { MessageInput } from "./MessageInput"
 
 export const ChatComp = () => {
 
-    const {messages, getMessages , selectedUser, isMessagesLoading, } = useChatStore()
+    const { getMessages , selectedUser, isMessagesLoading, } = useChatStore()
    
     useEffect(()=> {
         if (selectedUser) {
