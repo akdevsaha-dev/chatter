@@ -43,9 +43,9 @@ export const MessageInput = () => {
         }
     };
     return (
-        <div className="p-4 w-full">
-          {imagePreview && (
-        <div className="mb-3 flex items-center gap-2">
+      <div className="p-4 w-[64vw] fixed z-10 bottom-0 flex flex-col gap-2">
+      {imagePreview && (
+        <div className="flex items-center gap-2">
           <div className="relative">
             <img
               src={imagePreview as string}
@@ -54,8 +54,7 @@ export const MessageInput = () => {
             />
             <button
               onClick={removeImage}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
-              flex items-center justify-center"
+              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300 flex items-center justify-center"
               type="button"
             >
               <X className="size-3" />
@@ -64,6 +63,7 @@ export const MessageInput = () => {
         </div>
       )}
 
+      {/* FLEX WRAPPER TO PREVENT SHIFTING */}
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
         <div className="flex-1 flex gap-2 items-center">
           <input
@@ -98,6 +98,6 @@ export const MessageInput = () => {
           <Send size={22} />
         </button>
       </form>
-        </div>
+    </div>
     );
 };

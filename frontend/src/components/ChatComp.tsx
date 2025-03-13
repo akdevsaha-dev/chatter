@@ -13,10 +13,10 @@ export const ChatComp = () => {
         }
     }, [selectedUser, selectedUser?._id, getMessages])
 
-    if(isMessagesLoading) return <div className="h-screen flex items-center justify-center">Loading...</div>
+    if(isMessagesLoading) return <div className="h-screen lex items-center justify-center">Loading...</div>
     return <div className="h-full w-full">
       <ChatHeader/>
-      <div className="h-[78%] w-full ">
+      <div className="h-[80vh] w-full absolute z-0">
         yoo
       </div>
       <MessageInput/>

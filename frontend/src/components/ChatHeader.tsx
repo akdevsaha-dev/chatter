@@ -16,4 +16,4 @@ export const ChatHeader = () => {
         </div>
        </div>
     </div>
-}\
+}
